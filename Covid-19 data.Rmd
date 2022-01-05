@@ -14,6 +14,10 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r }
+# Data Source     https://www.kaggle.com/imdevskp/corona-virus-report?select=covid_19_clean_complete.csv
+
+
+
 library(ggplot2)
 library(readr)
 data <- read_csv("data/covid_19_data_cleaned.csv")
@@ -94,8 +98,8 @@ us
 us
  ggplot(us)+
   
-  geom_point(data=us,aes(x=Date,y=Recovered),size=2,colour="Red")+
-  geom_line(data=us,aes(x=Date,y=Deaths),size=2,colour="Yellow")+
+  geom_point(data=us,aes(x=Date,y=Recovered),size=2,colour="Green")+
+  geom_line(data=us,aes(x=Date,y=Deaths),size=2,colour="Red")+
  labs(title="Recovered and Deaths cases  of  Covid-19 for US ",subtitle = "Covid-19 Cases",caption = "Rukhsar Ahmed")
 
 
