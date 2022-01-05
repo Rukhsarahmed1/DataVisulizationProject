@@ -1,0 +1,119 @@
+---
+title: "Project "
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r }
+library(ggplot2)
+library(readr)
+data <- read_csv("data/covid_19_data_cleaned.csv")
+data
+```
+
+
+# For displying the data we use the str
+```{r}
+str(data)
+```
+# For removing the province/state
+```{r}
+library(plyr)
+data <- ddply(data,.(Date, Country), numcolwise(sum))
+```
+
+# Remove the lattitude and longitude because we do not need these columns
+```{r}
+str(data)
+data <- within(data, rm(Lat,Long))
+str(data)
+```
+
+# Now select the data of US for plotting purpose
+```{r}
+us <- subset(data, Country=="US")
+```
+
+## Now show single data but one problem might some countries do not updated the latest data
+```{r}
+# now show single data but one problem might some countries do not updated the latest data
+latest <- subset(data,Date==max(Date)-3)
+
+
+```
+# Top 10 most hitted Countries or affected by Covid-19
+
+```{r}
+
+
+latest <- latest[order(latest$Confirmed,decreasing = TRUE),]
+top <- latest[1:10,]
+top
+
+
+
+```
+
+
+
+
+# Plot using ggplot2
+#Box Plot
+```{r}
+
+
+library(ggplot2)
+ggplot(top,aes(x=Country,y=Confirmed))+
+  geom_col(colors="red",fill="orange")+
+  labs(title="Most top 10 Worst Hit Countries by Covid-19 for 2020 year",subtitle = "Covid-19 Dataset",caption = "Rukhsar Ahmed")
+
+```
+## Scatter plot
+```{r}
+
+us
+ ggplot(us)+
+  
+  geom_point(aes(x=Date,y=Confirmed),size=2,colour="Red")+
+ 
+  labs(title="Confirmed case of  Covid-19 for US ",subtitle = "Covid-19 Cases",caption = "Rukhsar Ahmed")
+
+```
+# Line plot
+```{r}
+
+us
+ ggplot(us)+
+  
+  geom_point(data=us,aes(x=Date,y=Recovered),size=2,colour="Red")+
+  geom_line(data=us,aes(x=Date,y=Deaths),size=2,colour="Yellow")+
+ labs(title="Recovered and Deaths cases  of  Covid-19 for US ",subtitle = "Covid-19 Cases",caption = "Rukhsar Ahmed")
+
+
+```
+# Line plot for checking the death rate 
+
+```{r}
+us
+ ggplot(us)+
+  geom_line(data=us,aes(x=Date,y=Deaths),size=2,colour="Red")+
+ labs(title="Total Deaths cases  of  Covid-19 for US ",subtitle = "Covid-19 Cases",caption = "Rukhsar Ahmed")
+
+```
+# Histogram with density 
+```{r}
+ggplot(top,aes(x=Deaths,fill=Country))+
+  geom_histogram(bins=35,aes(y=stat(density)))+
+  geom_density(colour="red")
+
+```
+
