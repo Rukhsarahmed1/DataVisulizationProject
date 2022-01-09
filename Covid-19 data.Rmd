@@ -1,5 +1,7 @@
 ---
-title: "Project "
+title: "Covid-19  "
+Author:"Rukhsar Ahmed"
+Date: "29-12-2020" 
 output: html_document
 ---
 
@@ -31,7 +33,7 @@ str(data)
 ```
 # For removing the province/state
 ```{r}
-library(plyr)
+# This step take 2 to 3 times because of large data set.It uses plyr library which is built in R version
 data <- ddply(data,.(Date, Country), numcolwise(sum))
 ```
 
@@ -44,6 +46,7 @@ str(data)
 
 # Now select the data of US for plotting purpose
 ```{r}
+# We want to plot the data
 us <- subset(data, Country=="US")
 ```
 
@@ -71,53 +74,76 @@ top
 
 
 # Plot using ggplot2
-#Box Plot
+
 ```{r}
-
-
+# Bar Plot
 library(ggplot2)
 ggplot(top,aes(x=Country,y=Confirmed))+
-  geom_col(colors="red",fill="orange")+
-  labs(title="Most top 10 Worst Hit Countries by Covid-19 for 2020 year",subtitle = "Covid-19 Dataset",caption = "Rukhsar Ahmed")
+  geom_col(fill="red")+
+  labs(title="1. Bar Plot for Most top 10 Worst Hit Countries by Covid-19 for 2020 year",subtitle = "Covid-19 Dataset",caption = "Rukhsar Ahmed")
+
+
+
 
 ```
-## Scatter plot
-```{r}
+The above graph shows that US is the top most affected country from the covid-19.
 
+## Scatter plot for the confirmed cases of covid-19 in US
+```{r}
 us
  ggplot(us)+
   
-  geom_point(aes(x=Date,y=Confirmed),size=2,colour="Red")+
+  geom_point(aes(x=Date,y=Confirmed),size=0.3,colour="Red")+
  
-  labs(title="Confirmed case of  Covid-19 for US ",subtitle = "Covid-19 Cases",caption = "Rukhsar Ahmed")
+  labs(title="2 Scatter Graph For Confirmed case of  Covid-19 for US ",subtitle = "Covid-19 Cases",caption = "Rukhsar Ahmed")
+```
+
+
+```{r}
+head(us)
+
 
 ```
-# Line plot
+# Line plot for the Confirmed and Recovered cases in US
 ```{r}
 
-us
- ggplot(us)+
-  
-  geom_point(data=us,aes(x=Date,y=Recovered),size=2,colour="Green")+
+ 
+ggplot(us)+
+  geom_line(data=us,aes(x=Date,y=Confirmed),size=2,colour="blue")+
+  geom_line(data=us,aes(x=Date,y=Recovered),size=2,colour="Red")+
+  labs(title="Confirmed and Recovered cases  of  Covid-19 for US ",subtitle = "Covid-19 Cases",caption = "Rukhsar Ahmed")
+
+
+
+
+# Now draw lines between the Recovered and deaths
+ggplot(us)+
+  geom_line(data=us,aes(x=Date,y=Recovered),size=2,colour="blue")+
   geom_line(data=us,aes(x=Date,y=Deaths),size=2,colour="Red")+
- labs(title="Recovered and Deaths cases  of  Covid-19 for US ",subtitle = "Covid-19 Cases",caption = "Rukhsar Ahmed")
+  labs(title="3. Line Plot for Recovered and Deaths cases  of  Covid-19 for US ",subtitle = "Covid-19 Cases",caption = "Rukhsar Ahmed")
+
 
 
 ```
 # Line plot for checking the death rate 
 
 ```{r}
-us
- ggplot(us)+
+ggplot(us)+
   geom_line(data=us,aes(x=Date,y=Deaths),size=2,colour="Red")+
  labs(title="Total Deaths cases  of  Covid-19 for US ",subtitle = "Covid-19 Cases",caption = "Rukhsar Ahmed")
-
 ```
-# Histogram with density 
+
+
 ```{r}
-ggplot(top,aes(x=Deaths,fill=Country))+
-  geom_histogram(bins=35,aes(y=stat(density)))+
-  geom_density(colour="red")
-
+head(us)
 ```
 
+# Overlay density and histogram
+```{r}
+ggplot(us, aes(x = Confirmed)) +
+geom_histogram(color="orange", fill="green",bins = 20,
+aes(y = stat(density))) +
+geom_density(colour = "blue")+
+  labs(title = "Overlay Density and Histogram Graph  ",subtitle = "US",caption = "Rukhsar Ahmed")
+
+```
