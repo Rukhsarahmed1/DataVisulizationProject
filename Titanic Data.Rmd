@@ -1,0 +1,203 @@
+---
+title: "Titanic Dataset  "
+Author:"Rukhsar Ahmed"
+Date: "29-12-2020" 
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r }
+# Data Source  https://www.kaggle.com/brendan45774/test-file   
+
+# library(readr) is by default in the current version so we don't need it.
+
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+data <- read_csv("Data/tested.csv")
+data
+glimpse(data)
+
+```
+
+
+
+
+# We also need to convert the Survived,Sex and Pclass to factors. Survived is coded in 0s and 1s. Os for died and 1s for survived. We can recode Survived appropritely.
+```{r}
+data <- data %>% 
+  select(-1) %>% 
+  mutate(Survived = factor(Survived, levels = c(0, 1), labels = c("Died", "Survived")),
+         Sex = factor(Sex),
+         Pclass = factor(Pclass))
+
+head(data)
+
+
+```
+
+
+
+# We'll start our visual analysis of the data focusing on questions
+# related to survival rates. Specifically, these questions will use
+# the factor (i.e., categorical) variables in the data. Factor data
+# is very common in the business context and ggplot2 offers many
+# powerful features for visualizing factor data
+
+
+
+
+
+
+
+
+
+As Survived is a factor (i.e., categorical) variable, a bar chart is a great visualization to use.
+
+```{r}
+ggplot(data, aes(x = Survived)) + 
+  theme_bw() +
+  geom_bar() +
+  labs(y = "Total Passengers",
+       x = "Survived",
+       title = "Titanic Survival Rates",
+       caption = "Rukhsar Ahmed")
+
+
+```
+Therefore the above graph shows that number of people who died waere more as compared to the people who survived.
+
+
+
+ 
+# Check the survial rate by gender? For this purpose we also use color of two aspects to for visulization the simultaneously data.
+
+```{r}
+ggplot(data, aes(x = Sex, fill = Survived)) + 
+  theme_bw() +
+  geom_bar() +
+  labs(y = " Total Passenger ",
+       x = "Sex",
+       title = "Titanic Survival Rates by Sex",
+       caption = "Rukhsar Ahmed")
+```
+The above graph shows that more male dies as compared to the male. We can say that the approximate the death percentage of male were 70% while the female were 30%
+
+
+
+
+
+
+
+
+#The survival rate by class of ticket and gender?
+# We can leverage facets to further segment the data
+```{r}
+ggplot(data, aes(x = Sex, fill = Survived)) +      
+  theme_bw() +
+  facet_wrap(~ Pclass) +
+  geom_bar() +
+  labs(y = "Passenger Count",
+       x = "Sex",
+       title = "Titanic Survival Rates by Pclass and Sex",
+       caption = "Rukhsar Ahmed")
+```
+The graph show the death and survival rate of the male and female with the pclass because we have three classes in the dataset. This graph shows that in every pclass the death ratio of male was high as compared to the female. 
+
+
+
+
+
+
+
+# Scatter plot for Age vs Fare
+```{r}
+ggplot(data, aes(x=Age, y=Fare, color = Sex)) + 
+  geom_point()+
+  geom_smooth(lm='y ~ x')+
+  labs(title="Scatter Plot showing Age vs Fare in Titanic",
+       x= "Age",
+       y= "Fare",
+       caption = "Rukhsar Ahmed")
+
+```
+
+
+#Next, we'll move on to visualizing continuous (i.e., numeric)
+# data using ggplot2. We'll explore visualizations of single 
+# numeric variables (i.e., columns) and also illustrate how
+# ggplot2 enables visual drill-down on numeric data.
+
+
+
+
+
+#What is the survival rate by age?
+# The histogram is a staple of visualizing numeric data as it very 
+# powerfully communicates the distrubtion of a variable (i.e., column).
+```{r}
+
+ggplot(data, aes(x = Age, fill = Survived)) +
+  theme_bw() +
+  geom_histogram(binwidth = 5) +
+  labs(y = "Total Passengers",
+       x = "Age (binwidth = 5)",
+       title = "Titanic Survival Rates by Age",
+       caption = "Rukhsar Ahmed")
+
+```
+
+
+
+# We can also do this by using another famous plot of ggplot which is Boxplot.
+
+```{r}
+
+
+ggplot(data, aes(x = Survived, y = Age,fill = Sex)) +
+  theme_bw() +
+  geom_boxplot() +
+  labs(y = "Age",
+       x = "Survived",
+       title = "Titanic Survival Rates by Age",
+       caption = "Rukhsar Ahmed")
+
+
+
+```
+
+
+
+
+# What is the survival rates by age when segmented by gender and class of ticket?
+# A related visualization to the histogram is a density plot. Think of
+# a density plot as a smoothed version of the histogram. Using ggplot2
+# we can use facets to allow for visual drill-down via density plots.
+
+```{r}
+ggplot(data, aes(x = Age, fill = Survived)) +
+  theme_bw() +
+  facet_wrap(Sex ~ Pclass) +
+  geom_density(alpha = 0.5) +
+  labs(y = "Age",
+       x = "Survived",
+       title = "Titanic Survival Rates by Age, Pclass and Sex",
+       caption = "Rukhsar Ahmed")
+
+
+
+
+```
+Conclusion
+Graphs are powerful visualization tools. In the titanic data, age, sex and passenger class were important predictors of survival. Identifying such predictors is important for predictive modelling
+
+
