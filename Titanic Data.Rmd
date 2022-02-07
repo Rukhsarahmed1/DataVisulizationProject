@@ -1,6 +1,6 @@
 ---
 title: "Titanic Dataset  "
-Author:"Rukhsar Ahmed"
+Author: "Rukhsar Ahmed"
 Date: "29-12-2020" 
 output: html_document
 ---
@@ -14,6 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+> This is the default Markdown text. Why is this still here?
 
 ```{r }
 # Data Source  https://www.kaggle.com/brendan45774/test-file   
@@ -33,6 +35,10 @@ glimpse(data)
 
 
 # We also need to convert the Survived,Sex and Pclass to factors. Survived is coded in 0s and 1s. Os for died and 1s for survived. We can recode Survived appropritely.
+
+
+> The `#` makes the text a first-level heading. That's probably not intended.
+
 ```{r}
 data <- data %>% 
   select(-1) %>% 
@@ -92,7 +98,7 @@ ggplot(data, aes(x = Sex, fill = Survived)) +
 ```
 The above graph shows that more male dies as compared to the male. We can say that the approximate the death percentage of male were 70% while the female were 30%
 
-
+> According to the plot above, all male passengers died and all female survived.
 
 
 
@@ -113,6 +119,7 @@ ggplot(data, aes(x = Sex, fill = Survived)) +
 ```
 The graph show the death and survival rate of the male and female with the pclass because we have three classes in the dataset. This graph shows that in every pclass the death ratio of male was high as compared to the female. 
 
+> Same problem here. All male passengers died.
 
 
 
@@ -176,7 +183,7 @@ ggplot(data, aes(x = Survived, y = Age,fill = Sex)) +
 ```
 
 
-
+> There doesn't seem to be a difference.
 
 # What is the survival rates by age when segmented by gender and class of ticket?
 # A related visualization to the histogram is a density plot. Think of
@@ -200,4 +207,4 @@ ggplot(data, aes(x = Age, fill = Survived)) +
 Conclusion
 Graphs are powerful visualization tools. In the titanic data, age, sex and passenger class were important predictors of survival. Identifying such predictors is important for predictive modelling
 
-
+> You submitted a completely new data set but many errors persist. The formating is very odd and hardly readable. Code effort is minimal. The presentation focusses on the plots itself, not a story.
